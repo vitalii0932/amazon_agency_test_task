@@ -45,8 +45,24 @@ public class CampaignStatService {
     for (SPCampaignReport report : reports) {
       Long campaignId = report.getCampaignId();
 
+      /*
+      This code element is commented out because the add() method is used all the time,
+      even when you just want to create a new object and not increase the values of an existing object
+
       campaignAnalyticMap.computeIfAbsent(campaignId, k -> new SPCampaignStatistic(report))
           .add(new SPCampaignStatistic(report));
+       */
+
+
+      /*
+        This code element is used to create a new object if it does not exist in the map
+        and add objects values if it already exists in the map
+       */
+      if (campaignAnalyticMap.containsKey(campaignId)) {
+        campaignAnalyticMap.get(campaignId).add(new SPCampaignStatistic(report));
+      } else {
+        campaignAnalyticMap.put(campaignId, new SPCampaignStatistic(report));
+      }
     }
 
     // Get all enabled SP campaigns by profile and portfolio
